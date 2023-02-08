@@ -8,7 +8,7 @@ const [password, setPassword] = useState(null)
 const [confirmPassword, setConfirmPassword] = useState(null)
 const [error, setError] = useState(null)
 
-    let navigate = useNavigate
+const navigate = useNavigate()
 
 console.log(email, password, confirmPassword)
 const handleClick = () => {
@@ -23,7 +23,11 @@ const handleSubmit = async (e) =>
             setError('Passwords do not match')
             return
         }
-        console.log('posting', email, password)
+
+        if (!email.endsWith("@sseriga.edu") && !email.endsWith("@rgsl.edu.lv")) {
+            setError("Email must be from a valid domain (sseriga.edu or rgsl.edu.lv)");
+            return;
+        }
 
         const response = await axios.post(`http://localhost:8000/signup`, {email, password})
 

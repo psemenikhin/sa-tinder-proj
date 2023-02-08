@@ -1,7 +1,6 @@
 import {useState} from 'react'
 import Nav from '../components/Nav'
 
-
 const Onboarding = () =>
     {
     const [formData, setFormData] = useState({
@@ -12,7 +11,10 @@ const Onboarding = () =>
         show_gender: false,
         gender_interest: 'woman',
         email: '',
-        url: '',
+        url1: '',
+        url2: '',
+        url3: '',
+        url4: '',
         bio: '',
         fav_prof: '',
         matches: []
@@ -28,8 +30,6 @@ const Onboarding = () =>
             [name]: value
         }))
         }
-
-    console.log(formData)
 
     const handleSubmit = () =>
         {
@@ -161,4 +161,5 @@ const Onboarding = () =>
         </>
     )
     }
+
 export default Onboarding

@@ -2,7 +2,7 @@ const PORT = 8000
 
 const express = require('express')
 const {MongoClient} = require('mongodb')
-const uri = 'mongodb+srv://itcomchief:IM21aDRbi2eCzftV@cluster69.qfrzzih.mongodb.net/?retryWrites=true&w=majority'
+const url = 'mongodb+srv://itcomchief:IM21aDRbi2eCzftV@cluster69.qfrzzih.mongodb.net/?retryWrites=true&w=majority'
 const { v4: uuidv4 } = require("uuid")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 app.post('/signup', async(req, res) =>
 {
-    const client = new MongoClient(uri)
+    const client = new MongoClient(url)
     const {email, password} = req.body
 
     const generatedUserId = uuidv4()
@@ -53,7 +53,7 @@ app.post('/signup', async(req, res) =>
 })
 
 app.get('/users', async (req, res) => {
-    const client = new MongoClient(uri)
+    const client = new MongoClient(url)
 
     try {
         await client.connect()

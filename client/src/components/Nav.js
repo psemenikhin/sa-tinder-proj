@@ -1,19 +1,25 @@
 import logo from '../images/SA_logo.png'
-import colorLogo from '../images/SA_logo.png'
+import { useNavigate } from 'react-router-dom'
 
-const Nav = ({minimal, setShowModal, showModal, setIsSignUp}) =>
+const Nav = ({authToken, minimal, setShowModal, showModal, setIsSignUp}) =>
     {
+       const navigate = useNavigate()
 
     const handleClick = () =>
         {
-        setShowModal(true)
+            setShowModal(true)
+            setIsSignUp(false)
+            console.log('clicked')
         }
 
-    const authToken = false
+    const handleLogoClick = () => {
+    navigate('/');
+    }
+
     return (
         <nav>
-            <div className="logo-container">
-                <img className="logo" src={minimal ? colorLogo : logo}/>
+            <div className="logo-container" onClick={handleLogoClick}>
+                <img className="logo" src={logo} alt="Logo should be here, but something broke"/>
             </div>
             {!authToken && !minimal && <button
                 className="nav-button"

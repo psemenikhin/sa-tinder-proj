@@ -1,24 +1,27 @@
 import {useState} from 'react'
 import Nav from '../components/Nav'
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom'
+import axios from "axios";
+
 
 const Onboarding = () =>
     {
+    const [cookie, setCookie, removeCookie] = useCookies(['user'])
     const [formData, setFormData] = useState({
-        user_id: '',
+        user_id: cookie.UserId,
         first_name: '',
         age: '',
-        gender: 'man',
+        gender: '',
         show_gender: false,
-        gender_interest: 'woman',
-        email: '',
-        url1: '',
-        url2: '',
-        url3: '',
-        url4: '',
+        gender_interest: '',
+        url: '',
         bio: '',
         fav_prof: '',
         matches: []
     })
+
+        let navigate = useNavigate()
     const handleChange = (e) =>
         {
         console.log('e', e)
@@ -31,20 +34,31 @@ const Onboarding = () =>
         }))
         }
 
-    const handleSubmit = () =>
+    const handleSubmit = async (e) =>
         {
-        console.log('submitted')
+        e.preventDefault()
+        try {
+            const response = await axios.put('http://localhost:8000/user', {formData})
+            const success = response.status === 200
+
+            if (success) {
+                navigate(`/dashboard`)
+            }
+        } catch (err) {
+            console.log(err)
+        }
         }
     return (
         <>
+            <div className="onboarding-nav">
             <Nav
                 minimal={true}
                 setShowModal={() =>
                     {
                     }}
                 showModal={false}
-
             />
+            </div>
             <div className="onboarding">
                 <h2>CREATE ACCOUNT</h2>
 
@@ -77,8 +91,8 @@ const Onboarding = () =>
                                 name="gender"
                                 value={formData.gender}
                                 onChange={handleChange}>
-                            <option value="male" selected={formData.gender === "man"}>male</option>
-                            <option value="female" selected={formData.gender === "woman"}>female</option>
+                            <option value="male" selected={formData.gender === "man"}>a man</option>
+                            <option value="female" selected={formData.gender === "woman"}>a woman</option>
                             <option value="other" selected={formData.gender === "other"}>non-binary/other</option>
                         </select>
 
@@ -153,7 +167,7 @@ const Onboarding = () =>
                             required={true}
                         />
                         <div className="photo-container">
-                            <img src={formData.url} alt="profile pic preview"/>
+                            {formData.url && <img src={formData.url} alt="profile pic preview"/>}
                         </div>
                     </section>
                 </form>

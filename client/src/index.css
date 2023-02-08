@@ -44,9 +44,12 @@ html {
   font-weight: 500;
   font-size: 15px;
   background: rgba(21, 47, 104, 0.75);
-  border-radius: 30px;
+  border-radius: 15px;
   border: solid 2px #152f68;
   margin: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 30%;
 }
 
 .secondary-button:hover {
@@ -93,6 +96,12 @@ nav .logo-container {
   margin: 15px;
 }
 
+nav .logo-container:hover {
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+}
+
 nav .logo-container .logo {
   height: 100%;
 }
@@ -118,31 +127,27 @@ nav .logo-container .logo {
 /*--------------------------------------Auth modal----------------------------------------------*/
 
 .auth-modal {
-  position: center;
-  top: 175px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   max-width: 360px;
-  height: 60vh;
+  max-height: 60vh;
   background-color: white;
+  border: #ccc solid 2px;
   border-radius: 10px;
-  padding: 40px;
+  padding: 60px;
+  box-shadow: 0 0 5px rgba(0, 0, 0.25);
 }
 
 .auth-modal .close-icon {
   float: right;
   font-size: 30px;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .auth-modal .close-icon:hover {
   cursor: pointer;
-}
-
-.auth-modal form {
-  display: flex;
-  flex-direction: column;
 }
 
 .auth-modal input[type=password],
@@ -150,6 +155,10 @@ nav .logo-container .logo {
   padding: 8px;
   margin: 8px;
   font-size: 17px;
+}
+
+.auth-modal input {
+  justify-content: center;
 }
 
 /*--------------------------------------Onboarding----------------------------------------------*/
@@ -167,8 +176,11 @@ nav .logo-container .logo {
   border-top: solid 1px rgb(213, 213, 213);
 }
 
-.onboarding .logo {
-  background: linear-gradient(45deg, black, white);
+.onboarding-nav {
+  background: linear-gradient(
+          to bottom,
+          rgba(21, 47, 104, 0.9) 0%,
+          rgba(21, 47, 104, 0.5) 100%)
 }
 
 .onboarding form {
@@ -326,7 +338,7 @@ nav .logo-container .logo {
   background-color: white;
   box-shadow: rgba(0,0,0,0.05) 0 6px 24px 0,
   rgba(0,0,0,0.08) 0 0 0 1px;
-  width: 30%;
+  width: 25%;
   text-align: left;
   z-index: 1;
 }
@@ -352,14 +364,8 @@ nav .logo-container .logo {
   border-bottom: solid 4px #7a7a7a;
 }
 
-.chat-container .profile {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  color: white;
-}
-
-.chat-container .log-out-icon {
+.chat-container .profile,
+.chat-container .log-out-icon{
   display: flex;
   align-items: center;
   padding: 20px;

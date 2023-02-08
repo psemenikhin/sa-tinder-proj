@@ -1,34 +1,54 @@
 import TinderCard from 'react-tinder-card';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import ChatContainer from '../components/ChatContainer';
+import axios from "axios";
+import {useCookies} from 'react-cookie'
 
-const Dashboard = () =>
-    {
+const Dashboard = () => {
+    const [user, setUser] = useState(null)
+    const [cookies, removeCookie, setCookie] = useCookies(['user'])
 
-    const db = [
+    const userId = cookies.UserId
+    const getUser = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/user', {
+                params: { userId }
+            })
+            setUser(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
+
+    console.log('user', user)
+
+    const characters = [
         {
             name: 'Richard Hendricks',
-            url: '../images/richard.jpg',
+            url: 'https://i.imgur.com/RprOj4v.jpg',
         },
         {
             name: 'Erlich Bachman',
-            url: 'https://this-person-does-not-exist.com/img/avatar-e924f72593e3a6a7ad17c0b32a4b0e7e.jpg'
+            url: 'https://i.imgur.com/J7ZVv7t.jpg'
         },
         {
             name: 'Monica Hall',
-            url: 'https://this-person-does-not-exist.com/img/avatar-e924f72593e3a6a7ad17c0b32a4b0e7e.jpg'
+            url: 'https://i.imgur.com/6uPek0m.jpg'
         },
         {
             name: 'Jared Dunn',
-            url: 'https://this-person-does-not-exist.com/img/avatar-e924f72593e3a6a7ad17c0b32a4b0e7e.jpg'
+            url: 'https://i.imgur.com/wj1yCnM.jpg'
         },
         {
             name: 'Dinesh Chugtai',
-            url: 'https://this-person-does-not-exist.com/img/avatar-e924f72593e3a6a7ad17c0b32a4b0e7e.jpg'
+            url: 'https://i.imgur.com/OMb1zAe.jpg'
         }
     ]
 
-    const characters = db
     const [lastDirection, setLastDirection] = useState()
 
     const swiped = (direction, nameToDelete) =>

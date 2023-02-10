@@ -2,23 +2,42 @@ const PORT = 8000
 
 const express = require('express')
 const {MongoClient} = require('mongodb')
-const url = 'mongodb+srv://itcomchief:IM21aDRbi2eCzftV@cluster69.qfrzzih.mongodb.net/?retryWrites=true&w=majority'
 const { v4: uuidv4 } = require("uuid")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
+const multer = require("multer");
+const fs = require('fs');
+
+require('dotenv').config()
+
+const uri = process.env.URI
+
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.json("Hello there!")
-})
+
+
+app.post('/upload', function(req, res) {
+let file = req.files.file;
+let filename = `${Date.now()}-${file.originalname}`;
+
+file.mv(`client/src/images/${filename}`, function(err) {
+if (err) {
+    return res.status(500).send(err);
+}
+
+res.json({
+    file: `client/src/images/${filename}`
+});
+});
+});
 
 app.post('/signup', async(req, res) =>
 {
-    const client = new MongoClient(url)
+    const client = new MongoClient(uri)
     const {email, password} = req.body
 
     const generatedUserId = uuidv4()
@@ -54,7 +73,7 @@ app.post('/signup', async(req, res) =>
 
 app.post('/login', async (req, res) => {
 
-    const client = new MongoClient(url)
+    const client = new MongoClient(uri)
     const {email, password} = req.body
 
     try {
@@ -79,11 +98,29 @@ app.post('/login', async (req, res) => {
     }
 })
 
-app.get('/user', async (req, res) => {
-    const client = new MongoClient(url)
-    const userId = req.query.userId
+// app.post("/upload", async (req, res) => {
+// const client = new MongoClient(uri);
+//
+// try {
+//     await client.connect();
+//     const database = client.db('sa-tinder-data');
+//     const files = database.collection('files');
+//
+//     const file = req.body.file;
+//     const insertedFile = await files.insertOne(file);
+//
+//     return res.status(200).send({ message: "File uploaded successfully", file: insertedFile.ops[0] });
+// } catch (err) {
+//     console.log(err);
+//     return res.status(500).send({ message: "Error uploading file", error: err });
+// } finally {
+//     await client.close();
+// }
+// });
 
-    console.log('userId' + userId)
+app.get('/user', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userId = req.query.userId
 
     try {
         await client.connect()
@@ -100,25 +137,53 @@ app.get('/user', async (req, res) => {
     }
 })
 
+app.get('/users', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userIds = JSON.parse(req.query.userIds)
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
+
+    const pipeline =
+        [
+            {
+                '$match': {
+                    'user_id': {
+                        '$in': userIds
+                    }
+                }
+            }
+        ]
+
+    const foundUsers = await users.aggregate(pipeline).toArray()
+    res.json(foundUsers)
+
+} finally {
+    await client.close()}
+})
+
 app.get('/gendered-users', async (req, res) => {
-    const client = new MongoClient(url)
-    const query_gender = req.query.gender
+    const client = new MongoClient(uri)
+    const gender_int = req.query.gender
 
     try {
         await client.connect()
         const database = client.db('sa-tinder-data')
         const users = database.collection('users')
-        const query = { gender: { $eq : query_gender }}
+        const query = { gender: {$eq: gender_int} }
         const foundUsers = await users.find(query).toArray()
 
         res.send(foundUsers)
-    }   finally {
+    } catch (err) {
+        console.log(err)
+    } finally {
         await client.close()
     }
 })
 
 app.put('/user', async (req, res) => {
-    const client = new MongoClient(url)
+    const client = new MongoClient(uri)
     const formData = req.body.formData
 
     try {
@@ -137,6 +202,7 @@ app.put('/user', async (req, res) => {
                 url: formData.url,
                 bio: formData.bio,
                 fav_prof: formData.fav_prof,
+                matches: formData.matches,
             },
         }
         const insertedUser = await users.updateOne(query, updateDocument)
@@ -150,8 +216,60 @@ app.put('/user', async (req, res) => {
 
 
 
+app.put('/add-match', async (req, res) => {
+const client = new MongoClient(uri)
+const {userId, matchedUserId} = req.body
 
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
 
+    const query = {user_id: userId}
+    const updateDocument = {
+        $push: {matches: {user_id: matchedUserId}}
+    }
+    const user = await users.updateOne(query, updateDocument)
+    res.send(user)
+} finally {
+    await client.close()
+}
+})
+
+app.get('/messages', async (req, res) => {
+    const client = new MongoClient(uri)
+    const {userId, correspondingUserId} = req.query
+    try {
+        await client.connect()
+        const database = client.db('sa-tinder-data')
+        const messages = database.collection('messages')
+
+        const query = {
+            from_userId: userId, to_userId: correspondingUserId
+        }
+        const foundMessages = await messages.find(query).toArray()
+        res.send(foundMessages)
+    } finally {
+    await client.close()
+    }
+
+})
+
+app.post('/message', async (req, res) => {
+const client = new MongoClient(uri)
+const message = req.body.message
+
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const messages = database.collection('messages')
+
+    const insertedMessage = await messages.insertOne(message)
+    res.send(insertedMessage)
+} finally {
+    await client.close()
+}
+})
 
 
 app.listen(PORT, () => console.log("Server running on port " + PORT))

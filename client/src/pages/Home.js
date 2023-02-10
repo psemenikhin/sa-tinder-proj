@@ -11,8 +11,6 @@ const Home = () => {
     const authToken = cookies.AuthToken
 
 const handleClick = () => {
-    console.log('clickity')
-
     if (authToken) {
         removeCookie('UserId', cookies.UserId)
         removeCookie('AuthToken', cookies.AuthToken)

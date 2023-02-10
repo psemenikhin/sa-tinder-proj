@@ -1,9 +1,9 @@
 import logo from '../images/SA_logo.png'
 import { useNavigate } from 'react-router-dom'
 
-const Nav = ({authToken, minimal, setShowModal, showModal, setIsSignUp}) =>
-    {
-       const navigate = useNavigate()
+const Nav = ({authToken, minimal, setShowModal, showModal, setIsSignUp}) => {
+
+    const navigate = useNavigate()
 
     const handleClick = () =>
         {

@@ -8,6 +8,7 @@ import axios from "axios";
 const Onboarding = () =>
     {
     const [cookie, setCookie, removeCookie] = useCookies(['user'])
+    const [error, setError] = useState(null)
     const [formData, setFormData] = useState({
         user_id: cookie.UserId,
         first_name: '',
@@ -24,30 +25,47 @@ const Onboarding = () =>
         let navigate = useNavigate()
     const handleChange = (e) =>
         {
-        console.log('e', e)
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
         const name = e.target.name
 
         setFormData((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
         }))
         }
 
-    const handleSubmit = async (e) =>
-        {
-        e.preventDefault()
-        try {
-            const response = await axios.put('http://localhost:8000/user', {formData})
-            const success = response.status === 200
+    const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
 
-            if (success) {
-                navigate(`/dashboard`)
-            }
-        } catch (err) {
-            console.log(err)
+    try {
+        const response = await axios.post("http://localhost:8000/upload", formData);
+        setFormData(prevState => ({
+            ...prevState,
+            url: response.data.url
+        }))
+    } catch (err) {
+        console.error(err);
+    }
+    };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.put('http://localhost:8000/user', { ...formData });
+        const success = response.status === 200;
+
+        if (response.status === 409) setError('Email already in use, log in or message support at itcom@sseriga.edu');
+
+        if (success) {
+            navigate(`/dashboard`);
         }
-        }
+    } catch (err) {
+        console.error(err);
+    }
+    };
+
     return (
         <>
             <div className="onboarding-nav">
@@ -160,10 +178,10 @@ const Onboarding = () =>
                     <section>
                         <label htmlFor="pictures">Profile pics</label>
                         <input
-                            type="url"
+                            type="file"
                             name="url"
                             id="url"
-                            onChange={handleChange}
+                            onChange={handleFileChange}
                             required={true}
                         />
                         <div className="photo-container">

@@ -4,24 +4,27 @@ import ChatContainer from '../components/ChatContainer';
 import axios from "axios";
 import {useCookies} from 'react-cookie'
 
-const Dashboard = () => {
+const Dashboard = () =>
+    {
     const [user, setUser] = useState(null)
     const [cookies, removeCookie, setCookie] = useCookies(['user'])
     const [genderedUsers, setGenderedUsers] = useState(null)
-
+    const [lastDirection, setLastDirection] = useState()
     const userId = cookies.UserId
-    const getUser = async () => {
+    const getUser = async () =>
+        {
         try {
             const response = await axios.get('http://localhost:8000/user', {
-                params: { userId }
+                params: {userId}
             })
             setUser(response.data)
         } catch (error) {
             console.log(error)
         }
-    }
+        }
 
-    const getGenderedUsers = async () => {
+    const getGenderedUsers = async () =>
+        {
         try {
             const response = await axios.get('http://localhost:8000/gendered-users', {
                 params: {gender: user?.gender_interest}
@@ -30,44 +33,46 @@ const Dashboard = () => {
         } catch (error) {
             console.log(error)
         }
-    }
+        }
 
-    useEffect(() => {
-        getUser()
+    useEffect(() =>
+    {
+    getUser()
     }, [])
 
-    console.log('gendered users', genderedUsers)
+    useEffect(() =>
+    {
+    if (user) {
+        getGenderedUsers()
+    }
+    }, [user])
 
-    const characters = [
+    const updateMatches = async (matchedUserId) =>
         {
-            name: 'Richard Hendricks',
-            url: 'https://i.imgur.com/RprOj4v.jpg',
-        },
-        {
-            name: 'Erlich Bachman',
-            url: 'https://i.imgur.com/J7ZVv7t.jpg'
-        },
-        {
-            name: 'Monica Hall',
-            url: 'https://i.imgur.com/6uPek0m.jpg'
-        },
-        {
-            name: 'Jared Dunn',
-            url: 'https://i.imgur.com/wj1yCnM.jpg'
-        },
-        {
-            name: 'Dinesh Chugtai',
-            url: 'https://i.imgur.com/OMb1zAe.jpg'
+        try {
+            const response = await axios.put('http://localhost:8000/add-match', {
+                userId,
+                matchedUserId
+            })
+        } catch (err) {
+            console.log(err)
         }
-    ]
+        getUser()
+        }
 
-    const [lastDirection, setLastDirection] = useState()
-
-    const swiped = (direction, nameToDelete) =>
-        {
-        console.log('removing: ' + nameToDelete)
+    const swiped = (direction, swipedUserId) => {
+        if (direction === 'right') {
+            updateMatches(swipedUserId);
+            console.log('updating matches...');
+        }
         setLastDirection(direction)
-        }
+    }
+
+    const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
+
+    const filteredGenderedUsers = genderedUsers?.filter(
+        genderedUser => !matchedUserIds.includes(genderedUser.user_id)
+    )
 
     const outOfFrame = (name) =>
         {
@@ -77,30 +82,31 @@ const Dashboard = () => {
     return (
         <>
             {user &&
-            <div className='dashboard'>
-                <ChatContainer user={user}/>
-                <div className='swipe-container'>
-                    <div className='card-container'>
-                        {characters.map((character) =>
-                            <TinderCard
-                                className='swipe'
-                                key={character.name}
-                                onSwipe={(dir) => swiped(dir, character.name)}
-                                onCardLeftScreen={() => outOfFrame(character.name)}>
-                                    <div style={{backgroundImage: 'url(' + character.url + ')'}}
-                                         className='card'>
-                                        <h3>{character.name}</h3>
+                <div className="dashboard">
+                    <ChatContainer user={user}/>
+                    <div className="swipe-container">
+                        <div className="card-container">
+
+                            {filteredGenderedUsers?.map((genderedUser) =>
+                                <TinderCard
+                                    className="swipe"
+                                    key={genderedUser.user_id}
+                                    onSwipe={(dir) => swiped(dir, genderedUser.user_id)}
+                                    onCardLeftScreen={() => outOfFrame(genderedUser.first_name)}>
+                                    <div
+                                        style={{backgroundImage: "url(" + genderedUser.url + ")"}}
+                                        className="card">
+                                        <h3>{genderedUser.first_name}</h3>
                                     </div>
-                            </TinderCard>
-                        )}
+                                </TinderCard>
+                            )}
+                            <div className="swipe-info">
+                                {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
+                            </div>
+                        </div>
                     </div>
-                    <div className="swipe-info">
-                        {lastDirection ? <p>Swipe direction: {lastDirection}</p> : <p/>}
-                    </div>
-                </div>
-            </div>
-            }
+                </div>}
         </>
     )
-}
+    }
 export default Dashboard

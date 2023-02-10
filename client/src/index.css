@@ -386,11 +386,30 @@ nav .logo-container .logo {
 
 /*--------------------------------------Chat display--------------------------------------------*/
 
-.chat-display {
+.chat-display,
+.matches-display {
   padding: 20px;
   height: 60vh;
   overflow-y: auto;
 }
+
+.chat-message-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.chat-message-header .img-container{
+  width: 20px;
+}
+
+.timestamp{
+  font-size: 10px;
+}
+
+.message {
+  font-size: 15px;
+}
+
 
 /*---------------------------------------Chat input---------------------------------------------*/
 

@@ -40,6 +40,8 @@ const handleSubmit = async (e) => {
         if (success && isSignUp) navigate(`/onboarding`)
         if (success && !isSignUp) navigate(`/dashboard`)
 
+        if (response.status === 409) {setError('Email already in use, log in or message support at itcom@sseriga.edu')}
+
         window.location.reload()
 
     } catch (error) {

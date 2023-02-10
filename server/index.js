@@ -100,16 +100,18 @@ app.get('/user', async (req, res) => {
     }
 })
 
-app.get('/users', async (req, res) => {
+app.get('/gendered-users', async (req, res) => {
     const client = new MongoClient(url)
+    const query_gender = req.query.gender
 
     try {
         await client.connect()
         const database = client.db('sa-tinder-data')
         const users = database.collection('users')
+        const query = { gender: { $eq : query_gender }}
+        const foundUsers = await users.find(query).toArray()
 
-        const returnedUsers = await users.find().toArray()
-        res.send(returnedUsers)
+        res.send(foundUsers)
     }   finally {
         await client.close()
     }

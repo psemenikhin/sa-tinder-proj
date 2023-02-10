@@ -12,9 +12,9 @@ const Onboarding = () =>
         user_id: cookie.UserId,
         first_name: '',
         age: '',
-        gender: '',
+        gender: 'man',
         show_gender: false,
-        gender_interest: '',
+        gender_interest: 'woman',
         url: '',
         bio: '',
         fav_prof: '',
@@ -91,8 +91,8 @@ const Onboarding = () =>
                                 name="gender"
                                 value={formData.gender}
                                 onChange={handleChange}>
-                            <option value="male" selected={formData.gender === "man"}>a man</option>
-                            <option value="female" selected={formData.gender === "woman"}>a woman</option>
+                            <option value="man" selected={formData.gender === "man"}>a man</option>
+                            <option value="woman" selected={formData.gender === "woman"}>a woman</option>
                             <option value="other" selected={formData.gender === "other"}>non-binary/other</option>
                         </select>
 

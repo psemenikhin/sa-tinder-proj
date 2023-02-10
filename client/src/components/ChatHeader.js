@@ -9,13 +9,13 @@ const ChatHeader = ({user}) => {
     navigate(`/`)
     }
 
-    return (
+return (
         <div className="chat-container-header">
             <div className="profile">
                 <div className="img-container">
-                    <img src={''} alt={"photo of you"}/>
+                    <img src={user.url} alt={"photo of you"}/>
                 </div>
-                <h3>{/*{user.first_name}*/} User Name</h3>
+                <h3>{user.first_name}</h3>
             </div>
             <i className="log-out-icon" onClick={logout}>/Log out/</i>
         </div>

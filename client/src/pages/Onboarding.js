@@ -21,6 +21,27 @@ const Onboarding = () =>
         fav_prof: '',
         matches: []
     })
+    const handleFileUpload = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('userId', formData.user_id);
+    formData.append('url', e.target.files[0]);
+
+    try {
+        const response = await axios.post('http://localhost:8000/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        const success = response.status === 200;
+        if (success) {
+            console.log(response.data.message);
+            console.log(response.data.path);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+    };
 
         let navigate = useNavigate()
     const handleChange = (e) =>
@@ -33,22 +54,6 @@ const Onboarding = () =>
             [name]: value,
         }))
         }
-
-    const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-        const response = await axios.post("http://localhost:8000/upload", formData);
-        setFormData(prevState => ({
-            ...prevState,
-            url: response.data.url
-        }))
-    } catch (err) {
-        console.error(err);
-    }
-    };
 
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -176,12 +181,12 @@ const Onboarding = () =>
                     </section>
 
                     <section>
-                        <label htmlFor="pictures">Profile pics</label>
+                        <label htmlFor="url">Profile pics</label>
                         <input
                             type="file"
                             name="url"
                             id="url"
-                            onChange={handleFileChange}
+                            onChange={handleFileUpload}
                             required={true}
                         />
                         <div className="photo-container">

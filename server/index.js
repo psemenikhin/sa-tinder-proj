@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const multer = require("multer");
 const fs = require('fs');
+const ftp = require('ftp');
 
 require('dotenv').config()
 
@@ -18,22 +19,56 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage }).single('url');
 
+app.post("/upload", upload, async (req, res) => {
+const client = new MongoClient(uri);
 
-app.post('/upload', function(req, res) {
-let file = req.files.file;
-let filename = `${Date.now()}-${file.originalname}`;
+try {
+    const ftpClient = new ftp();
+    ftpClient.connect({
+        host: 'ftp.association.lv',
+        port: 21,
+        user: 'admin@tinder.association.lv',
+        secure: true
+    });
 
-file.mv(`client/src/images/${filename}`, function(err) {
-if (err) {
-    return res.status(500).send(err);
+    ftpClient.on('ready', () => {
+    const fileName = `${uuid.v4()}.${req.file.originalname.split('.').pop()}`;
+    ftpClient.put(req.file.buffer, fileName, async (err) =>
+    {
+    if (err) {
+        console.log(err);
+        return res.status(500).send({message: "Error uploading file to FTP server", error: err});
+    }
+    ftpClient.end();
+
+    try {
+        await client.connect();
+        const database = client.db('sa-tinder-data');
+        const users = database.collection('users');
+
+        const userId = req.body.userId;
+        const url = `ftp://ftp.association.lv/${fileName}`;
+        const updateResult = await users.updateOne({user_id: userId}, {$set: {url}});
+
+        return res.status(200).send({message: "File uploaded successfully", path: url});
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({message: "Error uploading file to MongoDB", error: err});
+    } finally {
+        await client.close();
+    }
+    });
+    });
+} catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: "Error uploading file", error: err });
 }
+});
 
-res.json({
-    file: `client/src/images/${filename}`
-});
-});
-});
+
 
 app.post('/signup', async(req, res) =>
 {
@@ -199,7 +234,6 @@ app.put('/user', async (req, res) => {
                 gender: formData.gender,
                 show_gender: formData.show_gender,
                 gender_interest: formData.gender_interest,
-                url: formData.url,
                 bio: formData.bio,
                 fav_prof: formData.fav_prof,
                 matches: formData.matches,

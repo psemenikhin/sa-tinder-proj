@@ -22,6 +22,11 @@ app.use(express.json())
 const storage = multer.memoryStorage();
 const upload = multer({ storage }).single('url');
 
+// Default
+app.get('/', (req, res) => {
+res.json('Hello to my app')
+})
+
 app.post("/upload", upload, async (req, res) => {
 const client = new MongoClient(uri);
 
@@ -32,7 +37,8 @@ try {
         port: 21,
         user: 'admin@tinder.association.lv',
         secure: true
-    });
+    }
+        )
 
     ftpClient.on('ready', () => {
     const fileName = `${uuid.v4()}.${req.file.originalname.split('.').pop()}`;

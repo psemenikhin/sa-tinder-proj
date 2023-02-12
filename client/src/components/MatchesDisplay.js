@@ -10,7 +10,7 @@ const MatchesDisplay = ({matches, setClickedUser}) => {
     const userId = cookies.UserId;
     const getMatches = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/users', {
+            const response = await axios.get('https://ssersa-tinder-backend.onrender.com/users', {
                 params: {userIds: JSON.stringify(matchedUserIds)}
             })
             setMatchedProfiles(response.data)

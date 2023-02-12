@@ -11,7 +11,7 @@ const [clickedUsersMessages, setClickedUsersMessages] = useState(null)
 
 const getUsersMessages = async () => {
 try {
-    const response = await axios.get('http://localhost:8000/messages', {
+    const response = await axios.get('https://ssersa-tinder-backend.onrender.com/messages', {
         params: { userId: userId, correspondingUserId: clickedUserId}
     })
     setUsersMessages(response.data)
@@ -22,7 +22,7 @@ try {
 
 const getClickedUsersMessages = async () => {
 try {
-    const response = await axios.get('http://localhost:8000/messages', {
+    const response = await axios.get('https://ssersa-tinder-backend.onrender.com/messages', {
         params: { userId: clickedUserId , correspondingUserId: userId}
     })
     setClickedUsersMessages(response.data)

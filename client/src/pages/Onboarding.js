@@ -28,7 +28,7 @@ const Onboarding = () =>
     formData.append('url', e.target.files[0]);
 
     try {
-        const response = await axios.post('http://localhost:8000/upload', formData, {
+        const response = await axios.post('https://ssersa-tinder-backend.onrender.com/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -58,7 +58,7 @@ const Onboarding = () =>
     const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.put('http://localhost:8000/user', { ...formData });
+        const response = await axios.put('https://ssersa-tinder-backend.onrender.com/user', { ...formData });
         const success = response.status === 200;
 
         if (response.status === 409) setError('Email already in use, log in or message support at itcom@sseriga.edu');

@@ -2,7 +2,7 @@ const PORT = 8000
 
 const express = require('express')
 const {MongoClient} = require('mongodb')
-const { v4: uuidv4 } = require("uuid")
+const {v4: uuidv4} = require("uuid")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
@@ -20,27 +20,30 @@ app.use(cors())
 app.use(express.json())
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage }).single('url');
+const upload = multer({storage}).single('url');
 
 // Default
-app.get('/', (req, res) => {
+app.get('/', (req, res) =>
+{
 res.json('Hello to my app')
 })
 
-app.post("/upload", upload, async (req, res) => {
+app.post("/upload", upload, async (req, res) =>
+{
 const client = new MongoClient(uri);
 
 try {
     const ftpClient = new ftp();
     ftpClient.connect({
-        host: 'ftp.association.lv',
-        port: 21,
-        user: 'admin@tinder.association.lv',
-        secure: true
-    }
-        )
+            host: 'ftp.association.lv',
+            port: 21,
+            user: 'admin@tinder.association.lv',
+            secure: true
+        }
+    )
 
-    ftpClient.on('ready', () => {
+    ftpClient.on('ready', () =>
+    {
     const fileName = `${uuid.v4()}.${req.file.originalname.split('.').pop()}`;
     ftpClient.put(req.file.buffer, fileName, async (err) =>
     {
@@ -70,73 +73,73 @@ try {
     });
 } catch (err) {
     console.log(err);
-    return res.status(500).send({ message: "Error uploading file", error: err });
+    return res.status(500).send({message: "Error uploading file", error: err});
 }
 });
 
 
-
-app.post('/signup', async(req, res) =>
+app.post('/signup', async (req, res) =>
 {
-    const client = new MongoClient(uri)
-    const {email, password} = req.body
+const client = new MongoClient(uri)
+const {email, password} = req.body
 
-    const generatedUserId = uuidv4()
-    const hashedPassword = await bcrypt.hash(password, 10)
+const generatedUserId = uuidv4()
+const hashedPassword = await bcrypt.hash(password, 10)
 
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const users = database.collection('users')
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
 
-        const existingUser = await users.findOne({email})
+    const existingUser = await users.findOne({email})
 
-        if (existingUser) {
-            return res.status(409).send('User already exists, please log in')
-        }
-
-        const sanitizedEmail = email.toLowerCase()
-
-        const data = {
-            user_id: generatedUserId,
-            email: sanitizedEmail,
-            hashed_password: hashedPassword,
-        }
-        const insertedUser = await users.insertOne(data)
-
-        const token = jwt.sign(insertedUser, sanitizedEmail, {expiresIn: '24h'})
-
-        res.status(201).json({ token, userId: generatedUserId })
-    } catch (err) {
-        console.log(err)
+    if (existingUser) {
+        return res.status(409).send('User already exists, please log in')
     }
+
+    const sanitizedEmail = email.toLowerCase()
+
+    const data = {
+        user_id: generatedUserId,
+        email: sanitizedEmail,
+        hashed_password: hashedPassword,
+    }
+    const insertedUser = await users.insertOne(data)
+
+    const token = jwt.sign(insertedUser, sanitizedEmail, {expiresIn: '24h'})
+
+    res.status(201).json({token, userId: generatedUserId})
+} catch (err) {
+    console.log(err)
+}
 })
 
-app.post('/login', async (req, res) => {
+app.post('/login', async (req, res) =>
+{
 
-    const client = new MongoClient(uri)
-    const {email, password} = req.body
+const client = new MongoClient(uri)
+const {email, password} = req.body
 
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const users = database.collection('users')
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
 
-        const user = await users.findOne({email})
+    const user = await users.findOne({email})
 
-        const correctPassword = await bcrypt.compare(password, user.hashed_password)
+    const correctPassword = await bcrypt.compare(password, user.hashed_password)
 
-        if (user && correctPassword) {
-            const token = jwt.sign(user, email, {
-                expiresIn: '24h'
-            })
-            res.status(201).json({ token, userId: user.user_id })
-        } else {
-            res.status(400).send('Invalid credentials')
-        }
-    } catch(err) {
-        console.log(err)
+    if (user && correctPassword) {
+        const token = jwt.sign(user, email, {
+            expiresIn: '24h'
+        })
+        res.status(201).json({token, userId: user.user_id})
+    } else {
+        res.status(400).send('Invalid credentials')
     }
+} catch (err) {
+    console.log(err)
+}
 })
 
 // app.post("/upload", async (req, res) => {
@@ -159,28 +162,30 @@ app.post('/login', async (req, res) => {
 // }
 // });
 
-app.get('/user', async (req, res) => {
-    const client = new MongoClient(uri)
-    const userId = req.query.userId
+app.get('/user', async (req, res) =>
+{
+const client = new MongoClient(uri)
+const userId = req.query.userId
 
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const users = database.collection('users')
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
 
-        const query = {user_id: userId}
-        const user = await users.findOne(query)
-        res.send(user)
-    } catch (err) {
-        console.log(err)
-    } finally {
-        await client.close()
-    }
+    const query = {user_id: userId}
+    const user = await users.findOne(query)
+    res.send(user)
+} catch (err) {
+    console.log(err)
+} finally {
+    await client.close()
+}
 })
 
-app.get('/users', async (req, res) => {
-    const client = new MongoClient(uri)
-    const userIds = JSON.parse(req.query.userIds)
+app.get('/users', async (req, res) =>
+{
+const client = new MongoClient(uri)
+const userIds = JSON.parse(req.query.userIds)
 try {
     await client.connect()
     const database = client.db('sa-tinder-data')
@@ -201,62 +206,68 @@ try {
     res.json(foundUsers)
 
 } finally {
-    await client.close()}
+    await client.close()
+}
 })
 
-app.get('/gendered-users', async (req, res) => {
-    const client = new MongoClient(uri)
-    const gender_int = req.query.gender
+app.get('/gendered-users', async (req, res) =>
+{
+const client = new MongoClient(uri)
+const gender_int = req.query.gender
 
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const users = database.collection('users')
-        const query = { gender: {$eq: gender_int} }
-        const foundUsers = await users.find(query).toArray()
-
-        res.send(foundUsers)
-    } catch (err) {
-        console.log(err)
-    } finally {
-        await client.close()
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
+    let query = {}
+    if (gender_int !== 'both') {
+        query = {gender: {$eq: gender_int}}
     }
+    const foundUsers = await users.find(query).toArray()
+
+    res.send(foundUsers)
+} catch (err) {
+    console.log(err)
+} finally {
+    await client.close()
+}
 })
 
-app.put('/user', async (req, res) => {
-    const client = new MongoClient(uri)
-    const formData = req.body.formData
+app.put('/user', async (req, res) =>
+{
+const client = new MongoClient(uri)
+const formData = req.body.formData
 
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const users = database.collection('users')
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const users = database.collection('users')
 
-        const query = { user_id: formData.user_id }
-        const updateDocument = {
-            $set: {
-                first_name: formData.first_name,
-                age: formData.age,
-                gender: formData.gender,
-                show_gender: formData.show_gender,
-                gender_interest: formData.gender_interest,
-                bio: formData.bio,
-                fav_prof: formData.fav_prof,
-                matches: formData.matches,
-            },
-        }
-        const insertedUser = await users.updateOne(query, updateDocument)
-        res.send(insertedUser)
-    } catch (err) {
-        console.log(err)
-    } finally {
-        await client.close()
+    const query = {user_id: formData.user_id}
+    const updateDocument = {
+        $set: {
+            first_name: formData.first_name,
+            age: formData.age,
+            gender: formData.gender,
+            show_gender: formData.show_gender,
+            gender_interest: formData.gender_interest,
+            bio: formData.bio,
+            fav_prof: formData.fav_prof,
+            matches: formData.matches,
+        },
     }
+    const insertedUser = await users.updateOne(query, updateDocument)
+    res.send(insertedUser)
+} catch (err) {
+    console.log(err)
+} finally {
+    await client.close()
+}
 })
 
 
-
-app.put('/add-match', async (req, res) => {
+app.put('/add-match', async (req, res) =>
+{
 const client = new MongoClient(uri)
 const {userId, matchedUserId} = req.body
 
@@ -276,26 +287,28 @@ try {
 }
 })
 
-app.get('/messages', async (req, res) => {
-    const client = new MongoClient(uri)
-    const {userId, correspondingUserId} = req.query
-    try {
-        await client.connect()
-        const database = client.db('sa-tinder-data')
-        const messages = database.collection('messages')
+app.get('/messages', async (req, res) =>
+{
+const client = new MongoClient(uri)
+const {userId, correspondingUserId} = req.query
+try {
+    await client.connect()
+    const database = client.db('sa-tinder-data')
+    const messages = database.collection('messages')
 
-        const query = {
-            from_userId: userId, to_userId: correspondingUserId
-        }
-        const foundMessages = await messages.find(query).toArray()
-        res.send(foundMessages)
-    } finally {
-    await client.close()
+    const query = {
+        from_userId: userId, to_userId: correspondingUserId
     }
+    const foundMessages = await messages.find(query).toArray()
+    res.send(foundMessages)
+} finally {
+    await client.close()
+}
 
 })
 
-app.post('/message', async (req, res) => {
+app.post('/message', async (req, res) =>
+{
 const client = new MongoClient(uri)
 const message = req.body.message
 

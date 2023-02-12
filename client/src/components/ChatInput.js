@@ -14,7 +14,7 @@ const message = {
 }
 
 try {
-    await axios.post('http://localhost:8000/message', { message })
+    await axios.post('https://ssersa-tinder-backend.onrender.com/message', { message })
     getUserMessages()
     getClickedUsersMessages()
     setTextArea("")

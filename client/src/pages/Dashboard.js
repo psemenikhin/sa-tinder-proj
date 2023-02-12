@@ -14,7 +14,7 @@ const Dashboard = () =>
     const getUser = async () =>
         {
         try {
-            const response = await axios.get('http://localhost:8000/user', {
+            const response = await axios.get('https://ssersa-tinder-backend.onrender.com/user', {
                 params: {userId}
             })
             setUser(response.data)
@@ -26,7 +26,7 @@ const Dashboard = () =>
     const getGenderedUsers = async () =>
         {
         try {
-            const response = await axios.get('http://localhost:8000/gendered-users', {
+            const response = await axios.get('https://ssersa-tinder-backend.onrender.com/gendered-users', {
                 params: {gender: user?.gender_interest}
             })
             setGenderedUsers(response.data)
@@ -50,7 +50,7 @@ const Dashboard = () =>
     const updateMatches = async (matchedUserId) =>
         {
         try {
-            const response = await axios.put('http://localhost:8000/add-match', {
+            const response = await axios.put('https://ssersa-tinder-backend.onrender.com/add-match', {
                 userId,
                 matchedUserId
             })

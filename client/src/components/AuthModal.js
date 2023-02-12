@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
             return;
         }
 
-        const response = await axios.post(`http://localhost:8000/${isSignUp ? 'signup' : 'login'}`, {email, password})
+        const response = await axios.post(`https://ssersa-tinder-backend.onrender.com/${isSignUp ? 'signup' : 'login'}`, {email, password})
 
         setCookie('AuthToken', response.data.token)
         setCookie('UserId', response.data.userId)

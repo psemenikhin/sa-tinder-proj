@@ -38,7 +38,6 @@ const Onboarding = () =>
     // };
 
     useEffect(() => {
-        console.log(file)
     }, [file]);
 
     async function toBase64(file) {
@@ -58,8 +57,11 @@ const Onboarding = () =>
         try {
             const file = event.target.files[0];
             const result = await toBase64(file);
-            console.log(result);
-            return setFile(result);
+            setFile(result);
+            setFormData((prevState) => ({
+                ...prevState,
+                profile_picture_link: result,
+            }))
         } catch (error) {
             console.error(error);
         }

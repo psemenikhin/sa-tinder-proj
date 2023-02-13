@@ -1,6 +1,5 @@
 import {useState} from 'react'
 import Nav from '../components/Nav'
-import {uploadFile} from '../../config/storage'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
@@ -21,20 +20,18 @@ const Onboarding = () =>
         bio: '',
         fav_prof: '',
         matches: [],
-        profile_picture_link: '',
+        profile_picture: '',
     });
 
     let navigate = useNavigate()
 
     const [file, setFile] = useState(null);
 
-    const handleFileChange = async (e) =>
-        {
+    const handleFileChange = async (e) => {
+        if (e.target.file[0].size > 5120) {
+            setError('File is too big, please go to https://imagecompressor.com/ and compress it')
+        }
         setFile(e.target.files[0]);
-        e.preventDefault();
-        let formData = new FormData();
-        formData.append("file", file.data);
-        const response = await axios.post("https://ssersa-tinder-backend.onrender.com/upload", formData);
         };
 
     const handleChange = (e) =>
@@ -184,6 +181,7 @@ const Onboarding = () =>
                             id="file"
                             onChange={handleFileChange}
                             required={true}
+                            accept=".jpg, .png, .jpeg, .heif, .webp"
                         />
                         <div className="photo-container">
                             {formData.url && <img src={formData.url} alt="profile pic preview"/>}

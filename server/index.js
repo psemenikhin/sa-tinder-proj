@@ -17,25 +17,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const multer = Multer({
-    storage: Multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024,
-    },
-});
-
-const {Storage} = require('@google-cloud/storage');
-
-const storage = new Storage({
-    projectId: serviceAccount.project_id,
-    credentials: serviceAccount,
-});
-
-const auth = new google.auth.GoogleAuth({
-    keyFile: `${__dirname}/key.json`,
-    scopes: "https://www.googleapis.com/auth/drive",
-});
-
 // Default
 app.get('/', (req, res) =>
 {

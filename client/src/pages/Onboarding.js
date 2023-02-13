@@ -33,16 +33,23 @@ const Onboarding = () =>
         setError('File is too big, please go to https://imagecompressor.com/ and compress it')
     } else {
         setFile(toBase64(selectedFiles[0]))
-        console.log(file)
     }
     };
 
-    const toBase64 = file => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-    });
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+        let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+        if ((encoded.length % 4) > 0) {
+            encoded += '='.repeat(4 - (encoded.length % 4));
+        }
+        resolve(encoded);
+        };
+        reader.onerror = error => reject(error);
+        });
+    }
 
 
     const handleChange = (e) =>

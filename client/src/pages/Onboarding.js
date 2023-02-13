@@ -27,9 +27,9 @@ const Onboarding = () =>
 
     const [file, setFile] = useState(null);
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const selectedFiles = e.target.files;
-        if (selectedFiles[0].size > 5120) {
+        if (selectedFiles[0].size > 5789588) {
             setError('File is too big, please go to https://imagecompressor.com/ and compress it')
         }
         setFile(selectedFiles[0]);
@@ -45,6 +45,7 @@ const Onboarding = () =>
             ...prevState,
             [name]: value,
         }))
+            console.log(formData)
         }
 
 

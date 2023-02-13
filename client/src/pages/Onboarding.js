@@ -53,9 +53,9 @@ const Onboarding = () =>
         }))
         }
 
-    const handleFileUpload = async (event) => {
+    const handleFileUpload = async (e) => {
     const driveService = getDriveService();
-    const file = event.target.files[0];
+    const file = e.target.files[0];
 
     const fileMetadata = {
         name: file.name,
@@ -75,7 +75,7 @@ const Onboarding = () =>
         },
         (err, file) => {
         if (err) {
-            console.error(err);
+            console.error('file upload error ', err);
             return;
         }
         console.log(`File ID: ${file.id}`);

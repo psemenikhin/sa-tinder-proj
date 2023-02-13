@@ -32,10 +32,18 @@ const Onboarding = () =>
     if (selectedFiles[0].size >= 5789588) {
         setError('File is too big, please go to https://imagecompressor.com/ and compress it')
     } else {
-        setFile(selectedFiles[0]);
-        console.log(selectedFiles[0].size)
+        setFile(toBase64(selectedFiles[0]))
+        console.log(file)
     }
     };
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    });
+
 
     const handleChange = (e) =>
         {

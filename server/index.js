@@ -162,7 +162,7 @@ app.put('/user', async (req, res) =>
     const client = new MongoClient(uri)
     const formData = req.body.formData
 
-    console.log(formData)
+    console.log(req.body)
 
 try {
     await client.connect()

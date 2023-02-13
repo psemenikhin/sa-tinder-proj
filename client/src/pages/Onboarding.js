@@ -27,8 +27,9 @@ const Onboarding = () =>
 
     const [file, setFile] = useState(null);
 
-    const handleFileChange = async (e) => {
-        if (e.target.file[0].size > 5120) {
+    const handleFileChange = (e) => {
+        const selectedFiles = e.target.files;
+        if (selectedFiles[0].size > 5120) {
             setError('File is too big, please go to https://imagecompressor.com/ and compress it')
         }
         setFile(e.target.files[0]);

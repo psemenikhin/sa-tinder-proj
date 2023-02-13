@@ -27,36 +27,42 @@ const Onboarding = () =>
 
     const [file, setFile] = useState(null);
 
-    const handleFileChange = async (e) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles[0].size >= 5789588) {
-        setError('File is too big, please go to https://imagecompressor.com/ and compress it')
-    } else {
-        setFile(toBase64(selectedFiles[0]))
-        console.log(file)
-    }
-    };
+    // const handleFileChange = async (e) => {
+    // const selectedFiles = e.target.files;
+    // if (selectedFiles[0].size >= 5789588) {
+    //     setError('File is too big, please go to https://imagecompressor.com/ and compress it')
+    // } else {
+    //     setFile(toBase64(selectedFiles[0]))
+    //     console.log(file)
+    // }
+    // };
 
     useEffect(() => {
+        console.log(file)
     }, [file]);
 
     async function toBase64(file) {
-        return new Promise((resolve, reject) =>
-        {
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () =>
-            {
-            resolve(reader.result);
-            };
-        reader.onerror = error =>
-            {
-            reject(error);
-            };
-        }).then(result =>
-        {
-        return result.toString();
+        return new Promise((resolve, reject) => {
+        reader.onload = () => {
+        resolve(reader.result);
+        };
+        reader.onerror = error => {
+        reject(error);
+        };
         });
+    }
+
+    async function handleFileChange(event) {
+        try {
+            const file = event.target.files[0];
+            const result = await toBase64(file);
+            console.log(result);
+            return setFile(result);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleChange = (e) =>

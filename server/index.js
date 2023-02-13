@@ -13,7 +13,8 @@ const uri = process.env.URI
 const app = express()
 app.use(cors())
 app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', parameterLimit: 5000000}));
+//app.use(express.urlencoded({limit: '50mb', parameterLimit: 5000000}));
+
 // Default
 app.get('/', (req, res) =>
 {

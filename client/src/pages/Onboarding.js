@@ -33,6 +33,7 @@ const Onboarding = () =>
         setError('File is too big, please go to https://imagecompressor.com/ and compress it')
     } else {
         setFile(toBase64(selectedFiles[0]))
+        console.log(file)
     }
     };
 

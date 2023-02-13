@@ -1,9 +1,9 @@
 import {useState} from 'react'
 import Nav from '../components/Nav'
+import {uploadFile} from '../../config/storage'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
-const {google} = require('googleapis');
 
 
 const Onboarding = () =>
@@ -26,21 +26,16 @@ const Onboarding = () =>
 
     let navigate = useNavigate()
 
-    const path = require('path');
+    const [file, setFile] = useState(null);
 
-    const getDriveService = () => {
-    const KEYFILEPATH = path.join(__dirname, 'service.json');
-    const SCOPES = ['https://www.googleapis.com/auth/drive'];
-
-    const auth = new google.auth.GoogleAuth({
-        keyFile: KEYFILEPATH,
-        scopes: SCOPES,
-    });
-    const driveService = google.drive({ version: 'v3', auth });
-    return driveService;
-    };
-
-    module.exports = getDriveService;
+    const handleFileChange = async (e) =>
+        {
+        setFile(e.target.files[0]);
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("file", file.data);
+        const response = await axios.post("https://ssersa-tinder-backend.onrender.com/upload", formData);
+        };
 
     const handleChange = (e) =>
         {
@@ -53,51 +48,16 @@ const Onboarding = () =>
         }))
         }
 
-    const handleFileUpload = async (e) => {
-    const driveService = getDriveService();
-    const file = e.target.files[0];
-
-    const fileMetadata = {
-        name: file.name,
-        parents: ['1jmL9caqtgFC0tqHfZobEbW13hzDtbreF'],
-    };
-
-    const media = {
-        mimeType: file.type,
-        body: file,
-    };
-
-    driveService.files.create(
-        {
-            resource: fileMetadata,
-            media: media,
-            fields: 'id',
-        },
-        (err, file) => {
-        if (err) {
-            console.error('file upload error ', err);
-            return;
-        }
-        console.log(`File ID: ${file.id}`);
-        setFormData((prevState) => ({
-            ...prevState,
-            profile_picture_link: `https://drive.google.com/uc?export=view&id=${file.id}`,
-        }));
-        }
-    );
-    };
 
     const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.put('https://ssersa-tinder-backend.onrender.com/user', {
-            ...formData,
-            url: formData.profile_picture_link
-        });
+        const response = await axios.put('https://ssersa-tinder-backend.onrender.com/user', formData);
         const success = response.status === 200;
 
-        if (response.status === 409)
+        if (response.status === 409) {
             setError('Email already in use, log in or message support at itcom@sseriga.edu');
+        }
 
         if (success) {
             navigate(`/dashboard`);
@@ -222,7 +182,7 @@ const Onboarding = () =>
                             type="file"
                             name="file"
                             id="file"
-                            onChange={handleFileUpload}
+                            onChange={handleFileChange}
                             required={true}
                         />
                         <div className="photo-container">

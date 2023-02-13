@@ -1,3 +1,6 @@
+import Multer from "multer";
+import {google} from "googleapis";
+
 const PORT = 8000
 
 const express = require('express')
@@ -6,8 +9,6 @@ const {v4: uuidv4} = require("uuid")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
-
-
 require('dotenv').config()
 
 const uri = process.env.URI
@@ -16,6 +17,24 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+const multer = Multer({
+    storage: Multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024,
+    },
+});
+
+const {Storage} = require('@google-cloud/storage');
+
+const storage = new Storage({
+    projectId: serviceAccount.project_id,
+    credentials: serviceAccount,
+});
+
+const auth = new google.auth.GoogleAuth({
+    keyFile: `${__dirname}/key.json`,
+    scopes: "https://www.googleapis.com/auth/drive",
+});
 
 // Default
 app.get('/', (req, res) =>
@@ -86,6 +105,8 @@ try {
     console.log(err)
 }
 })
+
+app.post()
 
 app.get('/user', async (req, res) =>
 {
@@ -234,8 +255,7 @@ try {
 
 })
 
-app.post('/message', async (req, res) =>
-{
+app.post('/message', async (req, res) => {
 const client = new MongoClient(uri)
 const message = req.body.message
 

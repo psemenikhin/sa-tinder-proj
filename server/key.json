@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "neural-tangent-348513",
+  "private_key_id": "e534af75e193da15aace6e9f1a732a5a170680b7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJLpz8/YmK3HcM\njQKwOI0v21nhvffri3ejjnzvSWmOUSCtjKOkFJ3BUlpnXHuZFlQTZEAekynGenQk\nJhesYds+bZHNNcuyzNEPHfDPavDvgciC17rapNZW9ljuy7h3DTgTYSxx/4QN5Yyu\n2g7ZoZ+ps0SC2J8RpNQvjU7GcVbQNSKM4rU+jPdkK60gMsmFFrOcPCt/G2v08g+v\nlzx3Zvmi4OS1mjd6Bd/HTZ9Mt701wX3tJb3DWcMQIPLaM85l8GdMS4XDkRQ5vF9J\n0UXMEszqxu9OXrKgkxm60I+tUshDWBHE+mPHN49FUJs05iNSRq8qWiJ3tHbznAxI\nLJCaPJHnAgMBAAECggEANJTrUTBPB60xrGUao8ZUGIMDTf4h0z2DiosOWlhcr2bC\n3Llad+MvjDyjBkrkvxFX7i2QmK0sCQUuX9hY7aQx8nIe3nzF/biMl5/itcOkr2TD\nbHdIDidxIg+HFPrH/s3Er0QBotX+xMcPaw/xO66DlY4WRQCrKqhjEP6k7TboUshp\nKqKlQZgpi4lGd0IXFmHf9vanhiDqvMFIPa2L0DmHiALMSOHRysygbDGJ6gmDDqu+\nMtn9oRZcIqNlMOhgvuq9f9rzHPXu65aweLcKIQxUm6ks5C3g4LjdAwBBhTmO9XGq\nAxBUlEz5m65CgH7gumZyZFIwhcwYpnt9qwb/Pwt2QQKBgQD8v06dNtigANCITxRP\nLfv36rWDTJ+ZCbAoz21pT/PoBW7pGNJ8ZIXuqva0zbKdbz/gx63vdXJIWNALwSuu\nCcRTC0boOZPL8n74ytyhyt5h03b/1/vn9EJozHH9kfcO/wHfMclugeKallflAzmT\nTjjR9Gi63hIGOBrXFFrfjklLYQKBgQDLxWvNepGThJy9PLe86j4akcH7p9frZ4sP\nSePymkjw+ym7eLNOJw3rgkSPuVxMn7YDsWJWSp3LjkxB21QdM8ClL4pFz49Bh7SL\nWGOJtuOoj8pcJ7d4t+qtfucLYbhaRhscjKuAOU61wOSfUPbO224OT1OZMHCARFuW\nhOr9dkLqRwKBgQDjb8twUZBxuwnr/y1JaxnYKA8ajfL4Je2ta6sLH3VejrUVcM7I\nPTUAZjwGyys13Ixg2467crZaQAFG8pc5z3QpPnaaNmW3GwoDG5maxhGDemUVKOh3\n/CdeYssY4SavCe5HSGf410xwy2VgoZxH4BXlaMhtj7QsgIQ2kwyLK2DtQQKBgD6x\n6005XPkKYD9JIy8Y0yrRleGb7q8bGIoHrf7CwZaDcH+hz2lIUtwXJIkj+uYIbbQN\nK7hpFMvAaG4K0YJ6ndc1HVIFXopG+qG0/Esu3jTKqPRZs/WMgMQIu4Wg91uvHkBW\nd53oA/Of+bea7ZUPpnj4pzwGz1ZnsdZJ5xM9A7GZAoGAaT3JUbi864/u5xZoF66F\nBJOEX3HWzrECha5MF8BvSQaKKcoLolNKgrtiw3dJzIjMHsMy5dO/25Q+WL8GpRzQ\n6WkarHnGallMMYRd7ywr45uxPoLjMKWYNGUTymaswFGRm3czn2birUhPMPM6FFdU\nlTio/87Ujx47tbUz5L2pVC0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gcs-uploader@neural-tangent-348513.iam.gserviceaccount.com",
+  "client_id": "106543095320434784092",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcs-uploader%40neural-tangent-348513.iam.gserviceaccount.com"
+}

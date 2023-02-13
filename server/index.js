@@ -162,6 +162,8 @@ app.put('/user', async (req, res) =>
     const client = new MongoClient(uri)
     const formData = req.body.formData
 
+    console.log(formData)
+
 try {
     await client.connect()
     const database = client.db('sa-tinder-data')

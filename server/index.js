@@ -84,8 +84,6 @@ try {
 }
 })
 
-app.post()
-
 app.get('/user', async (req, res) =>
 {
 const client = new MongoClient(uri)

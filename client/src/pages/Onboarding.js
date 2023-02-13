@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Nav from '../components/Nav'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
@@ -37,21 +37,17 @@ const Onboarding = () =>
     }
     };
 
-    function toBase64(file) {
+    useEffect(() => {
+    }, [file]);
+
+    const toBase64 = (file) => {
         return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => {
-        let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
-        if ((encoded.length % 4) > 0) {
-            encoded += '='.repeat(4 - (encoded.length % 4));
-        }
-        resolve(encoded);
-        };
+        reader.onload = () => resolve(reader.result.toString());
         reader.onerror = error => reject(error);
         });
     }
-
 
     const handleChange = (e) =>
         {

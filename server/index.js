@@ -15,7 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', parameterLimit: 5000000, extended: true}));
+app.use(express.urlencoded({limit: '50mb', parameterLimit: 5000000}));
 // Default
 app.get('/', (req, res) =>
 {

@@ -32,7 +32,8 @@ const Onboarding = () =>
         if (selectedFiles[0].size > 5120) {
             setError('File is too big, please go to https://imagecompressor.com/ and compress it')
         }
-        setFile(e.target.files[0]);
+        setFile(selectedFiles[0]);
+        console.log(file.size)
         };
 
     const handleChange = (e) =>

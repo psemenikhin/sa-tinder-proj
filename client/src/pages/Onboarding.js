@@ -40,12 +40,22 @@ const Onboarding = () =>
     useEffect(() => {
     }, [file]);
 
-    const toBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+    async function toBase64(file) {
+        return new Promise((resolve, reject) =>
+        {
+        let reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.toString());
-        reader.onerror = error => reject(error);
+        reader.onload = () =>
+            {
+            resolve(reader.result);
+            };
+        reader.onerror = error =>
+            {
+            reject(error);
+            };
+        }).then(result =>
+        {
+        return result.toString();
         });
     }
 

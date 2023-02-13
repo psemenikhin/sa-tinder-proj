@@ -52,6 +52,12 @@ html {
   width: 30%;
 }
 
+
+.info-container h3{
+  display: flex;
+  flex-direction: row;
+}
+
 .secondary-button:hover {
   color: #c5c5c5;
   border: solid 2px #c5c5c5;

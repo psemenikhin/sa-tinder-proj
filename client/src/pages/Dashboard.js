@@ -96,13 +96,17 @@ const Dashboard = () =>
                                     <div
                                         style={{backgroundImage: "url(" + genderedUser.url + ")"}}
                                         className="card">
+                                        <div className='info-container'>
                                         <h3>{genderedUser.first_name}</h3>
+                                        <h3>{genderedUser.age}</h3>
+                                        <p>{genderedUser.bio}</p>
+                                        </div>
                                     </div>
                                 </TinderCard>
                             )}
-                            <div className="swipe-info">
+                            {/* <div className="swipe-info">
                                 {lastDirection ? <p>You swiped {lastDirection}</p> : <p/>}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>}

@@ -98,6 +98,7 @@ try {
     const query = {user_id: userId}
     const user = await users.findOne(query)
     res.send(user)
+    console.log(user)
 } catch (err) {
     console.log(err)
 } finally {

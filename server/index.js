@@ -77,7 +77,7 @@ try {
             expiresIn: '24h'
         })
         res.status(201).json({token, userId: user.user_id})
-        console.log(res.body)
+        console.log(res.status)
     } else {
         res.status(400).send('Invalid credentials')
     }

@@ -71,6 +71,8 @@ try {
 
     const user = await users.findOne({email: email},
         { user_id: 1, email: 1, hashed_password: 1 });
+    
+    console.log(user)
 
     const correctPassword = await bcrypt.compare(password, user.hashed_password)
 

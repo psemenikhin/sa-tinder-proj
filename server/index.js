@@ -69,15 +69,15 @@ try {
     const database = client.db('sa-tinder-data')
     const users = database.collection('users')
 
-    const user = await users.findOne({email: email},
-        { user_id: 1, email: 1, hashed_password: 1 });
-    
+    const user = await users.findOne({email: email,
+        projection: {user_id: 1, email: 1, hashed_password: 1}});
+
     console.log(user)
 
     const correctPassword = await bcrypt.compare(password, user.hashed_password)
 
     if (user && correctPassword) {
-        const token = jwt.sign(user, password)
+        const token = jwt.sign(user, password, {expiresIn: '24h'})
         res.status(201).json({user, userId: user.user_id})
         console.log(res.status)
     } else {

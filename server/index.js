@@ -47,6 +47,7 @@ try {
         email: sanitizedEmail,
         hashed_password: hashedPassword,
     }
+
     const insertedUser = await users.insertOne(data)
 
     const token = jwt.sign(insertedUser, sanitizedEmail, {expiresIn: '24h'})
@@ -68,15 +69,14 @@ try {
     const database = client.db('sa-tinder-data')
     const users = database.collection('users')
 
-    const user = await users.findOne({email})
+    const user = await users.findOne({email: email},
+        { user_id: 1, email: 1, hashed_password: 1 });
 
     const correctPassword = await bcrypt.compare(password, user.hashed_password)
 
     if (user && correctPassword) {
-        const token = jwt.sign(email, password,{
-            expiresIn: '1h'
-        })
-        res.status(201).json({token, userId: user.user_id})
+        const token = jwt.sign(user, password)
+        res.status(201).json({user, userId: user.user_id})
         console.log(res.status)
     } else {
         res.status(400).send('Invalid credentials')
@@ -99,7 +99,6 @@ try {
     const query = {user_id: userId}
     const user = await users.findOne(query)
     res.send(user)
-    console.log(user)
 } catch (err) {
     console.log(err)
 } finally {

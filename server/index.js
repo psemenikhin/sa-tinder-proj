@@ -73,7 +73,7 @@ try {
     const correctPassword = await bcrypt.compare(password, user.hashed_password)
 
     if (user && correctPassword) {
-        const token = jwt.sign(user, email, {
+        const token = jwt.sign(email, password,{
             expiresIn: '24h'
         })
         res.status(201).json({token, userId: user.user_id})

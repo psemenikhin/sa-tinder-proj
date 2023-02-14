@@ -285,26 +285,6 @@ nav .logo-container .logo {
 }
 
 /*--------------------------------------Dashboard-----------------------------------------------*/
-
-@media only screen and (max-width: 999px) {
-  /* styles for devices with screen width less than 1000 pixels */
-  .dashboard .swipe-container{
-    width: 50%
-  }
-  .card {
-    background-color: #000000;
-    width: 200px;
-    height: 400px;
-    box-shadow: 0 0 60px 0 rgba(0,0,0,0.10);
-    border-radius: 15px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  
-
-}
-
 .dashboard {
   display: flex;
   justify-content: space-between;

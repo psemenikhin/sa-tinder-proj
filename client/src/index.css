@@ -320,9 +320,16 @@ nav .logo-container .logo {
 }
 
 .card h3 {
-  bottom: 0;
+  bottom: 25px;
   margin: 10px;
   color: #fff;
+  font-size: 30px;
+}
+
+.bio {
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .info-container{

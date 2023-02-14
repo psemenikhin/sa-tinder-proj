@@ -99,7 +99,7 @@ const Dashboard = () =>
                                         <div className='info-container'>
                                         <h3>{genderedUser.first_name}</h3>
                                         <h3>{genderedUser.age}</h3>
-                                        <p>{genderedUser.bio}</p>
+                                        <h4 className='bio'>{genderedUser.bio}</h4>
                                         </div>
                                     </div>
                                 </TinderCard>

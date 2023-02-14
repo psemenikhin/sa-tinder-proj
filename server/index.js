@@ -69,10 +69,12 @@ try {
     const database = client.db('sa-tinder-data')
     const users = database.collection('users')
 
-    const user = await users.find({ email: email })
+    const cursor = await users.find({ email: email })
                                         .limit(1)
                                         .project({user_id: 1, email: 1, hashed_password: 1, _id: 0})
 
+    const user = cursor.next()
+    
     console.log('this is the login console.log ', user)
 
     const correctPassword = await bcrypt.compare(password, user.hashed_password)

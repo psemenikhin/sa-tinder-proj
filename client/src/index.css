@@ -323,12 +323,15 @@ nav .logo-container .logo {
   margin: 10px;
   color: #fff;
   font-size: 30px;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .bio {
   font-style: italic;
   font-size: 15px;
   font-weight: 400;
+  color: #fff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .info-container{

@@ -286,6 +286,14 @@ nav .logo-container .logo {
 
 /*--------------------------------------Dashboard-----------------------------------------------*/
 
+@media only screen and (max-width: 999px) {
+  /* styles for devices with screen width less than 1000 pixels */
+  .dashboard .swipe-container{
+    width: 50%;
+    display:
+  }
+}
+
 .dashboard {
   display: flex;
   justify-content: space-between;

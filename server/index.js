@@ -74,7 +74,7 @@ try {
 
     if (user && correctPassword) {
         const token = jwt.sign(email, password,{
-            expiresIn: '24h'
+            expiresIn: '1h'
         })
         res.status(201).json({token, userId: user.user_id})
         console.log(res.status)

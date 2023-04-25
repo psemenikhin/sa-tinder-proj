@@ -2,7 +2,7 @@
 
 This is a basic Tinder clone web app created for the Student Association of the Stockholm School of Economics in Riga. The application features basic Tinder functionality with the intention of improving and updating it over the next few months.
 
-![sa-tinder-proj](https://github.com/psemenikhin/sa-tinder-proj/blob/main/client/src/images/SA_logo.png?raw=true)
+![sa-tinder-proj](https://raw.githubusercontent.com/psemenikhin/sa-tinder-proj/main/client/src/images/SA_logo.png)
 
 ## Table of Contents
 
